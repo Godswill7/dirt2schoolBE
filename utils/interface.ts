@@ -8,5 +8,11 @@ export interface iAuth {
     secretKey:string
     profile:{}[],
 }
+export interface iBag {
+    bag: number,
+    cash: number,
+    userID: string,
+}
 
 export interface iAuthData extends iAuth, Document{}
+export interface iBagData extends iBag, Document{}
