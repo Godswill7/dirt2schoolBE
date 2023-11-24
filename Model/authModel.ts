@@ -27,6 +27,18 @@ const authModel = new Schema<iAuthData>(
         ref: "profiles",
       },
     ],
+    bagHistory: [
+      {
+        type: Types.ObjectId,
+        ref: "bags",
+      },
+    ],
+    feeHistory: [
+      {
+        type: Types.ObjectId,
+        ref:"fees"
+      },
+    ],
     secretKey:{
       type: String,
     }
