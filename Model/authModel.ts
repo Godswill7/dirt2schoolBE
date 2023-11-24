@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import { Schema, model,Types } from "mongoose";
 import { iAuthData } from "../utils/interface";
 
 const authModel = new Schema<iAuthData>(
@@ -23,7 +23,7 @@ const authModel = new Schema<iAuthData>(
     },
     profile: [
       {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "profiles",
       },
     ],

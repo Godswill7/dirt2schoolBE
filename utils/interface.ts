@@ -23,7 +23,7 @@ export interface iProfile {
 }
 
 interface iFee {
-    ammountPaid: Number;
+    ammountPaid: number;
 }
 
 export interface iBag {
