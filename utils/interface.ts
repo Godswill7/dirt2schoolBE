@@ -23,7 +23,8 @@ interface iProfile {
 }
 
 interface iFee {
-    ammountPaid: Number;
+  ammountPaid: Number;
+  studentID: string;
 }
 
 export interface iBag {
