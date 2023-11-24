@@ -24,8 +24,8 @@ export interface iProfile {
   user:{}
 }
 
-export interface iFee {
-    ammountPaid: Number;
+interface iFee {
+    ammountPaid: number;
 }
 
 export interface iBag {
