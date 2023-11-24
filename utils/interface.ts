@@ -25,7 +25,9 @@ export interface iProfile {
 }
 
 interface iFee {
-    ammountPaid: number;
+  ammountPaid: number;
+  schoolName: string;
+  studentID: string;
 }
 
 export interface iBag {
@@ -34,7 +36,17 @@ export interface iBag {
   studentID: string;
 }
 
+interface iSchool {
+  schoolName: string;
+  verified: boolean;
+  token?: string;
+  email: string;
+  password: string;
+  address?: string;
+}
+
 export interface iAuthData extends iAuth, Document {}
 export interface iBagData extends iBag, Document {}
 export interface iProfileData extends iProfile, Document {}
 export interface iFeeData extends iFee, Document {}
+export interface iSchoolData extends iSchool, Document {}

@@ -1,12 +1,21 @@
-import { Schema, Types } from "mongoose";
+import { Schema, model } from "mongoose";
+import { iFeeData } from "../utils/interface";
 
-
-const feeModel = new Schema({
+const feeModel = new Schema<iFeeData>(
+  {
     ammountPaid: {
-        type:Number
+      type: Number,
     },
-    userID: {
-        type: Types.ObjectId,
-        ref:"auths"
-    }
-})
+    studentID: {
+      type: String,
+    },
+    schoolName: {
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export default model<iFeeData>("fees", feeModel);
