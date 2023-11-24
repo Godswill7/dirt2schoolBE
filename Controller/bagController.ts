@@ -7,10 +7,10 @@ export const createBag = async (req: Request, res: Response) => {
     const { studentID } = req.params;
     const { bag, cash } = req.body;
 
-    const user = await authModel.findById(studentID);
+    const student = await authModel.findById(studentID);
 
-    if (user) {
-      if (user.verify === true && user.token === "") {
+    if (student) {
+      if (student.verify === true && student.token === "") {
         const createBag = await bagModel.create({
           bag,
           cash,
@@ -22,12 +22,12 @@ export const createBag = async (req: Request, res: Response) => {
         });
       } else {
         return res.status(404).json({
-          message: "user not verified",
+          message: "student not verified",
         });
       }
     } else {
       return res.status(404).json({
-        message: "user does not exist",
+        message: "student does not exist",
       });
     }
   } catch (error: any) {
