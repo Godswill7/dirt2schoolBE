@@ -11,7 +11,7 @@ export interface iAuth {
 export interface iBag {
     bag: number,
     cash: number,
-    userID: string,
+    studentID: string,
 }
 
 export interface iAuthData extends iAuth, Document{}

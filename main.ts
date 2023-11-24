@@ -3,6 +3,8 @@ import express, { Application, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import user from "./router/authRouter";
+import bag from "./router/authRouter";
+
 const main = (app: Application) => {
   app.use(express.json());
   app.use(cors());
@@ -22,7 +24,9 @@ const main = (app: Application) => {
       });
     }
   });
+  
   app.use("/api", user);
+  app.use("/api", bag);
 };
 
 export default main;

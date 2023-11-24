@@ -9,7 +9,7 @@ const bagModel = new Schema<iBagData>(
     cash: {
       type: Number,
     },
-    userID: {
+    studentID: {
       type: String,
     },
   },

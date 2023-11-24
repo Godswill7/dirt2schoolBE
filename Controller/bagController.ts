@@ -4,20 +4,20 @@ import authModel from "../Model/authModel";
 
 export const createBag = async (req: Request, res: Response) => {
   try {
-    const { userID } = req.params;
+    const { studentID } = req.params;
     const { bag, cash } = req.body;
 
-    const user = await authModel.findById(userID);
+    const user = await authModel.findById(studentID);
 
     if (user) {
       if (user.verify === true && user.token === "") {
         const createBag = await bagModel.create({
           bag,
           cash,
-          userID,
+          studentID,
         });
         return res.status(201).json({
-          message: `Your ${bag} has been created successfully`,
+          message:`Your ${bag} has been created successfully`,
           data:createBag
         });
       } else {
