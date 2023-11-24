@@ -1,9 +1,13 @@
 import { Schema, model, Types } from "mongoose";
 import { iProfileData } from "../utils/interface";
 
-const profileModel = new Schema(
+const profileModel = new Schema<iProfileData>(
   {
     address: {
+      type: String,
+      required: true,
+    },
+    fullName: {
       type: String,
       required: true,
     },
@@ -12,7 +16,7 @@ const profileModel = new Schema(
       required: true,
     },
     balance: {
-      type: String,
+      type: Number,
     },
     avatar: {
       type: String,
@@ -31,6 +35,10 @@ const profileModel = new Schema(
     motivation: {
       type: String,
       required: true,
+    },
+    user: {
+      type: Types.ObjectId,
+      ref: "users",
     },
   },
   {

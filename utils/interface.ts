@@ -13,13 +13,15 @@ export interface iAuth {
 
 export interface iProfile {
   address: string;
-  PhoneNumber: number;
+  fullName: string;
+  phoneNumber: number;
   balance: number;
   avatar: string;
   avatarID: string;
   schoolName: string;
   gender: string;
   motivation: string;
+  user:{}
 }
 
 export interface iFee {
