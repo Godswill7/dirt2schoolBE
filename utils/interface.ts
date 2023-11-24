@@ -11,7 +11,7 @@ export interface iAuth {
   feeHistory: {}[];
 }
 
-interface iProfile {
+export interface iProfile {
   address: string;
   PhoneNumber: number;
   balance: number;
@@ -23,8 +23,7 @@ interface iProfile {
 }
 
 interface iFee {
-  ammountPaid: Number;
-  studentID: string;
+    ammountPaid: Number;
 }
 
 export interface iBag {

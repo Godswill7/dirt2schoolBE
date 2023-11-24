@@ -32,17 +32,6 @@ const profileModel = new Schema(
       type: String,
       required: true,
     },
-    bagHistory: [
-      {
-        type: Types.ObjectId,
-        ref: "bags",
-      },
-    ],
-    feeHistory: [
-      {
-        type: Types.ObjectId,
-      },
-    ],
   },
   {
     timestamps: true,
