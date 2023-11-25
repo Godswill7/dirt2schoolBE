@@ -1,8 +1,8 @@
-import { Router } from "express"
+import { Router } from "express";
 import { createBag } from "../Controller/bagController";
 
 const router = Router();
 
-router.route("/:studentID/create-bag").post(createBag)
+router.route("/:studentID/create-bag").post(createBag);
 
-export default router
+export default router;
