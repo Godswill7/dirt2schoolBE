@@ -21,12 +21,12 @@ export interface iProfile {
   schoolName: string;
   gender: string;
   motivation: string;
-  user:{}
+  user: {};
 }
 
 interface iFee {
   ammountPaid: number;
-  schoolName: string;
+  schoolID: string;
   studentID: string;
 }
 

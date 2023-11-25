@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import schoolModel from "../Model/schoolModel";
 import bcrypt from "bcrypt";
 import { sendSchoolMail } from "../utils/email";
+import crypto from "crypto"
 
 export const createSchool = async (req: Request, res: Response) => {
   try {
@@ -10,11 +11,14 @@ export const createSchool = async (req: Request, res: Response) => {
     const encrypt = await bcrypt.genSalt(10);
     const decipher = await bcrypt.hash(password, encrypt);
 
+    const token = crypto.randomBytes(2);
+
     const school = await schoolModel.create({
       schoolName,
       email,
       password: decipher,
       address,
+      token,
     });
     sendSchoolMail(school).then(() => {
       console.log("School Mail Sent ...");
@@ -25,7 +29,7 @@ export const createSchool = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     return res.status(404).json({
-      message: `Error ${error.message}`,
+      message: `An Error Occured: ${error.message}`,
     });
   }
 };
@@ -60,7 +64,7 @@ export const loginSchool = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     return res.status(404).json({
-      message: `Error ${error.message}`,
+      message: `An Error Occured: ${error.message}`,
     });
   }
 };
@@ -73,7 +77,7 @@ export const verifySchool = async (req: Request, res: Response) => {
 
     if (findSchool) {
       if (!findSchool.verified && findSchool.token !== "") {
-        const verify = await schoolModel.findById(schoolID, {
+        const verify = await schoolModel.findByIdAndUpdate(schoolID, {
           verified: true,
           token: "",
         });
@@ -94,7 +98,55 @@ export const verifySchool = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     return res.status(404).json({
-      message: `Error ${error.message}`,
+      message: `An Error Occured: ${error.message}`,
+    });
+  }
+};
+
+export const getSchool = async (req: Request, res: Response) => {
+  try {
+    const { schoolID } = req.params;
+
+    const school = await schoolModel.findById(schoolID);
+
+    return res.status(200).json({
+      message: `you have gotten ${school?.schoolName} successfully`,
+      data: school,
+    });
+  } catch (error: any) {
+    return res.status(404).json({
+      message: `An Error Occured: ${error.message}`,
+    });
+  }
+};
+
+export const getAllSchools = async (req: Request, res: Response) => {
+  try {
+    const allSchools = await schoolModel.find();
+
+    return res.status(200).json({
+      message: "This is all schools",
+      data: allSchools,
+    });
+  } catch (error: any) {
+    return res.status(404).json({
+      message: `An Error Occured: ${error.message}`,
+    });
+  }
+};
+
+export const deleteSchool = async (req: Request, res: Response) => {
+  try {
+    const { schoolID } = req.params;
+
+    await schoolModel.findByIdAndDelete(schoolID);
+
+    return res.status(204).json({
+      message: "school have been deleted successfully",
+    });
+  } catch (error: any) {
+    return res.status(404).json({
+      message: `An Error Occured: ${error.message}`,
     });
   }
 };
