@@ -11,7 +11,7 @@ export const createSchool = async (req: Request, res: Response) => {
     const encrypt = await bcrypt.genSalt(10);
     const decipher = await bcrypt.hash(password, encrypt);
 
-    const token = crypto.randomBytes(2);
+    const token = crypto.randomBytes(2).toString("hex");
 
     const school = await schoolModel.create({
       schoolName,
