@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import schoolModel from "../Model/schoolModel";
 import bcrypt from "bcrypt";
 import { sendSchoolMail } from "../utils/email";
-import crypto from "crypto"
+import crypto from "crypto";
+import { role } from "../utils/roles";
 
 export const createSchool = async (req: Request, res: Response) => {
   try {
@@ -19,6 +20,7 @@ export const createSchool = async (req: Request, res: Response) => {
       password: decipher,
       address,
       token,
+      role: role.SCHOOL,
     });
     sendSchoolMail(school).then(() => {
       console.log("School Mail Sent ...");
