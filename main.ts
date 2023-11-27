@@ -4,6 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import user from "./router/authRouter";
 import bag from "./router/authRouter";
+import profileRouter from "./router/profileRouter";
 
 const main = (app: Application) => {
   app.use(express.json());
@@ -24,9 +25,10 @@ const main = (app: Application) => {
       });
     }
   });
-  
+
   app.use("/api", user);
   app.use("/api", bag);
+  app.use("/api", profileRouter);
 };
 
 export default main;

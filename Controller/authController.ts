@@ -282,11 +282,10 @@ export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { userID } = req.params;
 
-    const user = await authModel.findByIdAndDelete(userID);
+    await authModel.findByIdAndDelete(userID);
 
     return res.status(200).json({
       message: "User deleted successfully",
-      data: user,
     });
   } catch (error: any) {
     return res.status(404).json({
