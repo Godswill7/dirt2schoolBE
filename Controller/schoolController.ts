@@ -81,7 +81,7 @@ export const verifySchool = async (req: Request, res: Response) => {
       if (!findSchool.verified && findSchool.token !== "") {
         await schoolModel.findByIdAndUpdate(schoolID, {
           verified: true,
-          token: "",cd
+          token: "",
         });
 
         return res.status(201).json({

@@ -8,8 +8,7 @@ export const createProfile = async (req: any, res: Response) => {
   try {
     const { studentID } = req.params;
 
-    const { motivation, fullName, schoolName, address, phoneNumber, gender } =
-      req.body;
+    const { motivation, fullName, schoolName, address, phoneNumber, gender } = req.body;
 
     const student = await authModel.findById(studentID);
 
@@ -26,7 +25,8 @@ export const createProfile = async (req: any, res: Response) => {
         avatar: secure_url,
         avatarID: public_id,
       });
-      student.profile.push(new mongoose.Types.ObjectId(profiled?._id!));
+      student.profile.push(new mongoose.
+        Types.ObjectId(profiled?._id!));
       await student.save();
       return res.status(201).json({
         message: "student profile created",
