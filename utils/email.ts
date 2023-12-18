@@ -6,13 +6,13 @@ import jwt from "jsonwebtoken";
 import env from "dotenv";
 env.config();
 
-const GOOGLE_ID =
-  "72356347044-qj7re6pj9lc6onng45o5f6s6k9qk9q67.apps.googleusercontent.com";
-const GOOGLE_SECRET = "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";
-const GOOGLE_REFRESH_TOKEN =
-  "1//04bvw-58jDJqbCgYIARAAGAQSNwF-L9IrqMkUVudZc-hQ0eT5zPqpyt57Q6TgAnl25j3sVZcuJIMetAENeundPQHMkUWZ-Nqj984";
-const GOOGLE_URL = "https://developers.google.com/oauthplayground";
+const GOOGLE_ID = process.env.G_ID!;
+const GOOGLE_SECRET = process.env.G_SECRET!;
+const GOOGLE_REFRESH_TOKEN = process.env.G_REFRESH_TOKEN!;
+const GOOGLE_URL = process.env.G_URL!;
 // import file from "../views/index.ejs"
+
+
 const oAuth = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_URL);
 oAuth.setCredentials({ access_token: GOOGLE_REFRESH_TOKEN });
 
