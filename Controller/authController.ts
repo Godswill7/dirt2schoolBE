@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { role } from "../utils/roles";
-import { jwtDecode } from "jwt-decode";
 import {
   resetAccountPassword,
   sendAccountMail,
@@ -86,7 +85,7 @@ export const signInUser = async (req: Request, res: Response) => {
     if (user) {
       const check = await bcrypt.compare(password, user.password);
       if (check) {
-        if (user.verify && user.token === "") {
+        if (user.verified && user.token === "") {
           const token = jwt.sign({ id: user._id }, process.env.SECRET!);
 
           return res.status(201).json({
@@ -124,7 +123,7 @@ export const signInStudent = async (req: Request, res: Response) => {
     if (student) {
       const check = await bcrypt.compare(password, student.password);
       if (check) {
-        if (student.verify && student.token === "") {
+        if (student.verified && student.token === "") {
           const token = jwt.sign({ id: student._id }, process.env.SECRET!);
 
           return res.status(201).json({
@@ -172,7 +171,7 @@ export const verifyUser = async (req: Request, res: Response) => {
 
     const user = await authModel.findByIdAndUpdate(
       getID.id,
-      { verify: true, token: "" },
+      { verified: true, token: "" },
       { new: true }
     );
 
@@ -193,7 +192,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     const { email } = req.body;
 
     const user = await authModel.findOne({ email });
-    if (user?.verify && user.token === "") {
+    if (user?.verified && user.token === "") {
       const token = jwt.sign({ id: user._id }, process.env.SECRET!);
       const reset = await authModel.findByIdAndUpdate(
         user._id,
@@ -235,7 +234,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
     const user = await authModel.findById(getID.id);
 
-    if ((user?.verify && user, token !== "")) {
+    if ((user?.verified && user, token !== "")) {
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(password, salt);
 
