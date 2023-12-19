@@ -9,7 +9,7 @@ const feeModel = new Schema<iFeeData>(
     studentID: {
       type: String,
     },
-    schoolName: {
+    schoolID: {
       type: String,
     },
   },

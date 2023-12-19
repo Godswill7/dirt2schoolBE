@@ -43,7 +43,7 @@ router
   .patch(validatorHandler(changeValidator), changePassword);
 router.route("/get-all-user").get(getAllUser);
 router.route("/:userID/delete-user").delete(deleteUser);
-router.route("/:token/verify-user").get(verifyUser);
+router.route("/:userID/verify-user").patch(verifyUser);
 router.route("/:token/student-secret-key").patch(firstStudentVerify);
 
 export default router;
