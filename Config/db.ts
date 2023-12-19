@@ -10,7 +10,7 @@ const db=()=>{
        console.log("db connection established");
      });
    } catch (error:any) {
-    console.log("Error connecting Database ...")
+    console.log("first")
    }
 }
 

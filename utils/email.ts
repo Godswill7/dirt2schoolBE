@@ -10,8 +10,6 @@ const GOOGLE_ID = process.env.G_ID!;
 const GOOGLE_SECRET = process.env.G_SECRET!;
 const GOOGLE_REFRESH_TOKEN = process.env.G_REFRESH_TOKEN!;
 const GOOGLE_URL = process.env.G_URL!;
-// import file from "../views/index.ejs"
-
 
 const oAuth = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_URL);
 oAuth.setCredentials({ access_token: GOOGLE_REFRESH_TOKEN });
@@ -25,32 +23,40 @@ export const sendAccountMail = async (user: any) => {
       auth: {
         type: "OAuth2",
         user: "eumeh3882@gmail.com",
-        clientId: GOOGLE_ID,
-        clientSecret: GOOGLE_SECRET,
-        refreshToken: GOOGLE_REFRESH_TOKEN,
+        clientId: GOOGLE_ID!,
+        clientSecret: GOOGLE_SECRET!,
+        refreshToken: GOOGLE_REFRESH_TOKEN!,
         accessToken: getAccess,
       },
     });
 
-    const token = jwt.sign({ id: user._id }, process.env.SECRET!);
-
-    const passedData = {
-      url: `http://localhost:3783/api/${token}/verify-user`,
-    };
+    const token = jwt.sign(
+      {
+        id: user._id,
+        userToken: user.token,
+      },
+      process.env.SECRET!
+    );
 
     const readData = path.join(__dirname, "../views/verifyAccount.ejs");
-    const data = await ejs.renderFile(readData, passedData);
+
+    const data = await ejs.renderFile(readData, {
+    // name: user.userName,
+    email: user.email,
+    token: user.token,
+    url: `http://localhost:5173/api/${token}/verify-user`,
+ });
 
     const mailer = {
       from: " <eumeh3882@gmail.com> ",
       to: user.email,
-      subject: " dirt2school",
+      subject: "Dirt2school",
       html: data,
     };
 
     transport.sendMail(mailer);
-  } catch (error) {
-    console.log(error);
+  } catch (error:any) {
+    console.log(error.message);
   }
 };
 
@@ -70,19 +76,23 @@ export const resetAccountPassword = async (user: any) => {
       },
     });
 
+  
     const token = jwt.sign({ id: user._id }, process.env.SECRET!);
 
-    const passedData = {
-      url: `http://localhost:3783/api/${token}/reset-password`,
-    };
-
     const readData = path.join(__dirname, "../views/resetPassword.ejs");
-    const data = await ejs.renderFile(readData, passedData);
+
+ const data = await ejs.renderFile(readData, {
+  //  name: user.userName,
+   token: user.token,
+   email: user.email,
+   url: `http://localhost:3783/api/${token}/reset-password`,
+ });
+
 
     const mailer = {
       from: " <eumeh3882@gmail.com > ",
       to: user.email,
-      subject: "Welcome you can now reset your password",
+      subject: `Welcome ${user.email} you can now reset your password`,
       html: data,
     };
 
@@ -108,15 +118,25 @@ export const sendFirstAccountMail = async (student: any) => {
       },
     });
 
-    const token = jwt.sign({ id: student._id }, process.env.SECRET!);
 
-    const passedData = {
-      url: `http://localhost:3783/api/${token}/student-secret-key`,
-      code: student?.secretKey,
-    };
-
+     const token = jwt.sign(
+       {
+         id: student._id,
+         userToken: student.token,
+       },
+       process.env.SECRET!
+     );
+  
     const readData = path.join(__dirname, "../views/studentOTP.ejs");
-    const data = await ejs.renderFile(readData, passedData);
+
+    const data = await ejs.renderFile(readData, {
+      // name: user.userName,
+      email: student.email,
+      token: student.token,
+      code: student?.secretKey,
+      url: `http://localhost:3783/api/${token}/student-secret-key`,
+    });
+    
 
     const mailer = {
       from: " <eumeh3882@gmail.com> ",
@@ -149,12 +169,15 @@ export const sendSchoolMail = async (user: any) => {
 
     const token = jwt.sign({ id: user._id }, process.env.SECRET!);
 
-    const passedData = {
-      url: `http://localhost:3783/api/${token}/verify-user`,
-    };
-
     const readData = path.join(__dirname, "../views/verifySchool.ejs");
-    const data = await ejs.renderFile(readData, passedData);
+
+    const data = await ejs.renderFile(readData, {
+      // name: user.userName,
+      email: user?.email,
+      token: user?.token,
+      code: user?.secretKey,
+      url: `http://localhost:3783/api/${token}/verify-user`,
+    });
 
     const mailer = {
       from: " <eumeh3882@gmail.com> ",
