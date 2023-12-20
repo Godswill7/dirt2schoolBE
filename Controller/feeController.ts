@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import profileModel from "../Model/profileModel";
 import feeModel from "../Model/feeModel";
 import schoolModel from "../Model/schoolModel";
 import authModel from "../Model/authModel";
@@ -13,38 +12,26 @@ export const createFee = async (req: Request, res: Response) => {
     const getSchool = await schoolModel.findById(schoolID);
     const getStudent = await authModel.findById(studentID);
 
-    if (getSchool) {
-      if (getSchool.verified) {
-        if (getStudent) {
-          if (getStudent.verified) {
-            const createFee = await feeModel.create({
-              ammountPaid,
-              studentID,
-              schoolID,
-              schoolName: getSchool?.schoolName,
-            });
-            return res.status(HTTP.CREATE).json({
-              message: `Fees paid to ${getSchool.schoolName} successfully`,
-              data: createFee,
-            });
-          } else {
-            return res.status(HTTP.BAD).json({
-              message: "Student is not verified to receive payment",
-            });
-          }
-        } else {
-          return res.status(HTTP.BAD).json({
-            message: "Student does not exist on this platform",
-          });
-        }
+    if (getSchool?.verified && getSchool?.token === "") {
+      if (getStudent?.verified && getStudent?.token === "") {
+        const createFee = await feeModel.create({
+          ammountPaid,
+          studentID: getStudent._id,
+          schoolID: getSchool._id,
+          schoolName: getSchool.schoolName,
+        });
+        return res.status(HTTP.CREATE).json({
+          message: `Fees paid to ${getSchool.schoolName} successfully`,
+          data: createFee,
+        });
       } else {
         return res.status(HTTP.BAD).json({
-          message: "School is not verified to receive payments",
+          message: "Student is not verified to receive payment",
         });
       }
     } else {
       return res.status(HTTP.BAD).json({
-        message: "School does not exist on this platform",
+        message: "School is not verified to receive Payments",
       });
     }
   } catch (error: any) {

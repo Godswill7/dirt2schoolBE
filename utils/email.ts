@@ -41,11 +41,11 @@ export const sendAccountMail = async (user: any) => {
     const readData = path.join(__dirname, "../views/verifyAccount.ejs");
 
     const data = await ejs.renderFile(readData, {
-    // name: user.userName,
-    email: user.email,
-    token: user.token,
-    url: `http://localhost:5173/api/${token}/verify-user`,
- });
+      // name: user.userName,
+      email: user.email,
+      token: user.token,
+      url: `http://localhost:5173/api/${token}/verify-user`,
+    });
 
     const mailer = {
       from: " <eumeh3882@gmail.com> ",
@@ -55,7 +55,7 @@ export const sendAccountMail = async (user: any) => {
     };
 
     transport.sendMail(mailer);
-  } catch (error:any) {
+  } catch (error: any) {
     console.log(error.message);
   }
 };
@@ -76,18 +76,16 @@ export const resetAccountPassword = async (user: any) => {
       },
     });
 
-  
     const token = jwt.sign({ id: user._id }, process.env.SECRET!);
 
     const readData = path.join(__dirname, "../views/resetPassword.ejs");
 
- const data = await ejs.renderFile(readData, {
-  //  name: user.userName,
-   token: user.token,
-   email: user.email,
-   url: `http://localhost:3783/api/${token}/reset-password`,
- });
-
+    const data = await ejs.renderFile(readData, {
+      //  name: user.userName,
+      token: user.token,
+      email: user.email,
+      url: `http://localhost:3783/api/${token}/reset-password`,
+    });
 
     const mailer = {
       from: " <eumeh3882@gmail.com > ",
@@ -118,15 +116,14 @@ export const sendFirstAccountMail = async (student: any) => {
       },
     });
 
+    const token = jwt.sign(
+      {
+        id: student._id,
+        userToken: student.token,
+      },
+      process.env.SECRET!
+    );
 
-     const token = jwt.sign(
-       {
-         id: student._id,
-         userToken: student.token,
-       },
-       process.env.SECRET!
-     );
-  
     const readData = path.join(__dirname, "../views/studentOTP.ejs");
 
     const data = await ejs.renderFile(readData, {
@@ -136,12 +133,11 @@ export const sendFirstAccountMail = async (student: any) => {
       code: student?.secretKey,
       url: `http://localhost:3783/api/${token}/student-secret-key`,
     });
-    
 
     const mailer = {
       from: " <eumeh3882@gmail.com> ",
       to: student.email,
-      subject: "dirt2school",
+      subject: "Dirt2school",
       html: data,
     };
 
@@ -183,6 +179,49 @@ export const sendSchoolMail = async (user: any) => {
       from: " <eumeh3882@gmail.com> ",
       to: user.email,
       subject: " dirt2school",
+      html: data,
+    };
+
+    transport.sendMail(mailer);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const InputOtp = async (user: any) => {
+  try {
+    const getAccess: any = (await oAuth.getAccessToken()).token;
+
+    const transport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: "eumeh3882@gmail.com",
+        clientId: GOOGLE_ID,
+        clientSecret: GOOGLE_SECRET,
+        refreshToken: GOOGLE_REFRESH_TOKEN,
+        accessToken: getAccess,
+      },
+    });
+
+    const token = jwt.sign(
+      { id: user._id, userToken: user.token },
+      process.env.SECRET!
+    );
+
+    const readData = path.join(__dirname, "../views/inputOtp.ejs");
+
+    const data = await ejs.renderFile(readData, {
+      name:  user?.profile?.fullName,
+      token: user.token,
+      email: user.email,
+      url: `http://localhost:3783/api/${user._id}/input-otp`,
+    });
+
+    const mailer = {
+      from: " <eumeh3882@gmail.com > ",
+      to: user.email,
+      subject: `Welcome ${user.email} you will be directed to input your otp`,
       html: data,
     };
 
