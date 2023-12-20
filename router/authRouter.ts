@@ -4,6 +4,7 @@ import {
   deleteUser,
   firstStudentVerify,
   getAllUser,
+  inputOtp,
   registerStudent,
   registerUser,
   resetPassword,
@@ -16,6 +17,7 @@ import {
   changeValidator,
   createStudentValidator,
   createUserValidator,
+  inputOTP,
   resetValidator,
   signInStudentValidator,
   signInUserValidator,
@@ -41,6 +43,11 @@ router
 router
   .route("/:token/change-password")
   .patch(validatorHandler(changeValidator), changePassword);
+
+router
+  .route("/:userID/input-otp")
+  .patch(validatorHandler(inputOTP), inputOtp);
+  
 router.route("/get-all-user").get(getAllUser);
 router.route("/:userID/delete-user").delete(deleteUser);
 router.route("/:userID/verify-user").patch(verifyUser);

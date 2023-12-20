@@ -5,6 +5,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { role } from "../utils/roles";
 import {
+  InputOtp,
   resetAccountPassword,
   sendAccountMail,
   sendFirstAccountMail,
@@ -174,7 +175,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     const user = await authModel.findOne({ email });
 
     if (user?.verified && user.token === "") {
-      const token = crypto.randomBytes(2).toString("hex")
+      const token = crypto.randomBytes(2).toString("hex");
       const reset = await authModel.findByIdAndUpdate(
         user._id,
         { token },
@@ -184,7 +185,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         console.log("sent reset password email notification");
       });
       return res.status(HTTP.UPDATE).json({
-        message: "you can reset your password",
+        message: "you can reset your password go to your mail",
         data: reset,
       });
     } else {
@@ -208,7 +209,6 @@ export const changePassword = async (req: Request, res: Response) => {
     const user = await authModel.findById(userID);
 
     if (user?.verified && user.token !== "") {
-
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(password, salt);
 
@@ -231,6 +231,47 @@ export const changePassword = async (req: Request, res: Response) => {
     return res.status(HTTP.BAD).json({
       message: "Error changing password",
       data: error.message,
+    });
+  }
+};
+
+export const inputOtp = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const { token } = req.body;
+
+    const user = await authModel.findById(userID);
+
+    if (user?.verified) {
+      if (token === user.token) {
+        const update = await authModel.findByIdAndUpdate(
+          user._id,
+          {
+            token: "",
+          },
+          { new: true }
+        );
+        InputOtp(user).then(() => {
+          console.log("OTP mail sent ...")
+        })
+
+        return res.status(HTTP.UPDATE).json({
+          message: "You can now proceed to change Password",
+          data: update,
+        });
+      } else {
+        return res.status(HTTP.BAD).json({
+          message: "Incorrect Token",
+        });
+      }
+    } else {
+      return res.status(HTTP.BAD).json({
+        message: "User is Not Verified",
+      });
+    }
+  } catch (error: any) {
+    return res.status(HTTP.BAD).json({
+      message: "Error with Your Token",
     });
   }
 };
