@@ -14,7 +14,7 @@ const authModel = new Schema<iAuthData>(
       type: String,
       required: true,
     },
-    verify: {
+    verified: {
       type: Boolean,
       default: false,
     },

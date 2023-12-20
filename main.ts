@@ -4,7 +4,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 import user from "./router/authRouter";
 import bag from "./router/authRouter";
+import fee from "./router/feeRouter";
 import profileRouter from "./router/profileRouter";
+import school from "./router/schoolRouter";
 
 const main = (app: Application) => {
   app.use(express.json());
@@ -28,7 +30,9 @@ const main = (app: Application) => {
 
   app.use("/api", user);
   app.use("/api", bag);
+  app.use("/api", fee);
   app.use("/api", profileRouter);
+  app.use("/api", school);
 };
 
 export default main;

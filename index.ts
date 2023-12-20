@@ -10,9 +10,9 @@ const port:number =realPort
 const app:Application=express()
 main(app)
 
-const server =app.listen(process.env.PORT||port,()=>{
+const server = app.listen(process.env.PORT! || port, () => {
+    console.log()
     db()
-    console.log(`server is running on port ${port}`)
 })
 
 process.on("uncaughtException",(error:any)=>{
