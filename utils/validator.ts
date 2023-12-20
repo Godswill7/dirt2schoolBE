@@ -29,3 +29,7 @@ export const resetValidator = joi.object({
 export const changeValidator = joi.object({
   password: joi.string().required(),
 });
+
+export const inputOTP = joi.object({
+  token: joi.string().required(),
+});
