@@ -47,7 +47,7 @@ router
 router
   .route("/:userID/input-otp")
   .patch(validatorHandler(inputOTP), inputOtp);
-  
+
 router.route("/get-all-user").get(getAllUser);
 router.route("/:userID/delete-user").delete(deleteUser);
 router.route("/:userID/verify-user").patch(verifyUser);
