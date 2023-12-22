@@ -42,7 +42,7 @@ const mainApp = (app: Application) => {
   app.get("/", (req: Request, res: Response) => {
     try {
       return res.status(HTTP.OK).json({
-        message: "Success",
+        message: "Welcome to Dirt2School API, Enjoy 💥💫☑",
       });
     } catch (error: any) {
       return res.status(HTTP.BAD).json({
