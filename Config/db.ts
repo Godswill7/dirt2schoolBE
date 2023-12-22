@@ -4,14 +4,14 @@ env.config();
 
 const URL: string = process.env.APPLICATION_URL!
 
-const db = () => {
+const Database = () => {
   try {
     connect(URL).then(() => {
-      console.log("db connection established");
+      console.log("DB connected 🚀🚀🚀 ...");
     });
   } catch (error: any) {
-    console.log("first");
+    console.log("Error",error.message);
   }
 };
 
-export default db;
+export default Database;

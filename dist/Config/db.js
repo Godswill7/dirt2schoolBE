@@ -7,14 +7,14 @@ const mongoose_1 = require("mongoose");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const URL = process.env.APPLICATION_URL;
-const db = () => {
+const Database = () => {
     try {
         (0, mongoose_1.connect)(URL).then(() => {
-            console.log("db connection established");
+            console.log("DB connected 🚀🚀🚀 ...");
         });
     }
     catch (error) {
-        console.log("first");
+        console.log("Error", error.message);
     }
 };
-exports.default = db;
+exports.default = Database;

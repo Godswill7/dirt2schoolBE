@@ -27,13 +27,13 @@ export interface iProfile {
 interface iFee {
   ammountPaid: number;
   schoolID: string;
-  studentID: string;
+  userID: string;
 }
 
 export interface iBag {
   bag: number;
   cash: number;
-  studentID: string;
+  userID: string;
 }
 
 interface iSchool {

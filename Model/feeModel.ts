@@ -6,7 +6,7 @@ const feeModel = new Schema<iFeeData>(
     ammountPaid: {
       type: Number,
     },
-    studentID: {
+    userID: {
       type: String,
     },
     schoolID: {

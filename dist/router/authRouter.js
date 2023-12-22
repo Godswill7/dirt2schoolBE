@@ -22,9 +22,9 @@ router
     .post((0, validatorHandler_1.default)(validator_1.signInUserValidator), authController_1.signInUser);
 router
     .route("/reset-password")
-    .patch((0, validatorHandler_1.default)(validator_1.resetValidator), authController_1.resetPassword);
+    .patch((0, validatorHandler_1.default)(validator_1.resetPassword), authController_1.forgotPassword);
 router
-    .route("/:token/change-password")
+    .route("/:userID/change-password")
     .patch((0, validatorHandler_1.default)(validator_1.changeValidator), authController_1.changePassword);
 router
     .route("/:userID/input-otp")
