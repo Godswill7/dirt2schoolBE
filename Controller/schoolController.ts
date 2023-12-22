@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { sendSchoolMail } from "../utils/email";
 import crypto from "crypto";
 import { role } from "../utils/roles";
+import { HTTP } from "../error/mainError";
 
 export const createSchool = async (req: Request, res: Response) => {
   try {
@@ -25,12 +26,12 @@ export const createSchool = async (req: Request, res: Response) => {
     sendSchoolMail(school).then(() => {
       console.log("School Mail Sent ...");
     });
-    return res.status(201).json({
+    return res.status(HTTP.CREATE).json({
       message: `${schoolName} school has been created successfully`,
       data: school,
     });
   } catch (error: any) {
-    return res.status(404).json({
+    return res.status(HTTP.BAD).json({
       message: `An Error Occured: ${error.message}`,
     });
   }
@@ -46,26 +47,26 @@ export const loginSchool = async (req: Request, res: Response) => {
       if (findSchool.verified === true) {
         const isPassword = await bcrypt.compare(findSchool?.password, password);
         if (isPassword) {
-          return res.status(200).json({
+          return res.status(HTTP.OK).json({
             message: `Welcome back ${findSchool?.schoolName}`,
           });
         } else {
-          return res.status(404).json({
+          return res.status(HTTP.BAD).json({
             message: "Incorrect password",
           });
         }
       } else {
-        return res.status(404).json({
+        return res.status(HTTP.BAD).json({
           message: "School is not verified to operate on this platform",
         });
       }
     } else {
-      return res.status(404).json({
+      return res.status(HTTP.BAD).json({
         message: "School does not exist on this platform",
       });
     }
   } catch (error: any) {
-    return res.status(404).json({
+    return res.status(HTTP.BAD).json({
       message: `An Error Occured: ${error.message}`,
     });
   }
@@ -88,17 +89,17 @@ export const verifySchool = async (req: Request, res: Response) => {
           message: "School has been verifeid",
         });
       } else {
-        return res.status(404).json({
+        return res.status(HTTP.BAD).json({
           message: "School is already verified",
         });
       }
     } else {
-      return res.status(404).json({
+      return res.status(HTTP.BAD).json({
         message: "School does not exist",
       });
     }
   } catch (error: any) {
-    return res.status(404).json({
+    return res.status(HTTP.BAD).json({
       message: `An Error Occured: ${error.message}`,
     });
   }
@@ -115,7 +116,7 @@ export const getSchool = async (req: Request, res: Response) => {
       data: school,
     });
   } catch (error: any) {
-    return res.status(404).json({
+    return res.status(HTTP.BAD).json({
       message: `An Error Occured: ${error.message}`,
     });
   }
@@ -130,7 +131,7 @@ export const getAllSchools = async (req: Request, res: Response) => {
       data: allSchools,
     });
   } catch (error: any) {
-    return res.status(404).json({
+    return res.status(HTTP.BAD).json({
       message: `An Error Occured: ${error.message}`,
     });
   }
@@ -146,7 +147,7 @@ export const deleteSchool = async (req: Request, res: Response) => {
       message: "school have been deleted successfully",
     });
   } catch (error: any) {
-    return res.status(404).json({
+    return res.status(HTTP.BAD).json({
       message: `An Error Occured: ${error.message}`,
     });
   }

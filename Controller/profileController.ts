@@ -127,7 +127,7 @@ export const deleteOneProfile = async (req: Request, res: Response) => {
     const profiled = await profileModel.findByIdAndDelete(profileID);
 
     return res.status(HTTP.OK).json({
-      message: "can see one profile",
+      message: "Profile Deleted",
       data: profiled,
     });
   } catch (error: any) {
