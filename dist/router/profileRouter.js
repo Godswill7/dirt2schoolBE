@@ -5,10 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const profileController_1 = require("../Controller/profileController");
-const multer_1 = __importDefault(require("multer"));
-const upload = (0, multer_1.default)().single("avatar");
+// import multer from "multer";
+const multer_1 = __importDefault(require("../utils/multer"));
+// const upload = multer().single("avatar");
 const profileRouter = (0, express_1.Router)();
-profileRouter.route("/:studentID/create-profile").post(upload, profileController_1.createProfile);
+profileRouter.route("/:studentID/create-profile").post(multer_1.default, profileController_1.createProfile);
 profileRouter.route("/view-all-profile").get(profileController_1.viewProfile);
 profileRouter.route("/:profileID/view-one-profile").get(profileController_1.viewOneProfile);
 profileRouter.route("/:profileID/delete-one-profile").delete(profileController_1.deleteOneProfile);
