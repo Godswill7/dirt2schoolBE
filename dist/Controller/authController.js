@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.firstStudentVerify = exports.deleteUser = exports.getAllUser = exports.inputOtp = exports.changePassword = exports.resetPassword = exports.verifyUser = exports.signInStudent = exports.signInUser = exports.registerStudent = exports.registerUser = void 0;
+exports.firstStudentVerify = exports.deleteUser = exports.getAllUser = exports.inputOtp = exports.changePassword = exports.forgotPassword = exports.verifyUser = exports.signInStudent = exports.signInUser = exports.registerStudent = exports.registerUser = void 0;
 const authModel_1 = __importDefault(require("../Model/authModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_1 = __importDefault(require("crypto"));
@@ -172,7 +172,7 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.verifyUser = verifyUser;
-const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email } = req.body;
         const user = yield authModel_1.default.findOne({ email });
@@ -200,16 +200,16 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
-exports.resetPassword = resetPassword;
+exports.forgotPassword = forgotPassword;
 const changePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userID } = req.params;
         const { password } = req.body;
         const user = yield authModel_1.default.findById(userID);
-        if ((user === null || user === void 0 ? void 0 : user.verified) && user.token !== "") {
+        if ((user === null || user === void 0 ? void 0 : user.verified) && user.token === "") {
             const salt = yield bcrypt_1.default.genSalt(10);
             const hash = yield bcrypt_1.default.hash(password, salt);
-            const change = yield authModel_1.default.findByIdAndUpdate(userID, { password: hash, token: "" }, { new: true });
+            const change = yield authModel_1.default.findByIdAndUpdate(userID, { password: hash }, { new: true });
             return res.status(mainError_1.HTTP.UPDATE).json({
                 message: "changed password successfully",
                 data: change,
@@ -237,6 +237,7 @@ const inputOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (user === null || user === void 0 ? void 0 : user.verified) {
             if (token === user.token) {
                 const update = yield authModel_1.default.findByIdAndUpdate(user._id, {
+                    password: "",
                     token: "",
                 }, { new: true });
                 (0, email_1.InputOtp)(user).then(() => {

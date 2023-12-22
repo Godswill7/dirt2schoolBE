@@ -1,7 +1,7 @@
 import express, { Application } from "express";
-import db from "./Config/db";
 import main from "./mainApp";
 import env from "dotenv";
+import Database from "./Config/db";
 env.config();
 
 const realPort = parseInt(process.env.PORT!);
@@ -12,7 +12,7 @@ main(app);
 
 const server = app.listen(process.env.PORT! || port, () => {
   console.log();
-  db();
+  Database();
 });
 
 process.on("uncaughtException", (error: any) => {

@@ -8,7 +8,7 @@ const bagModel = new mongoose_1.Schema({
     cash: {
         type: Number,
     },
-    studentID: {
+    userID: {
         type: String,
     },
 }, { timestamps: true });

@@ -15,15 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteOneProfile = exports.updateProfile = exports.veiwStudentProfile = exports.viewOneProfile = exports.viewProfile = exports.createProfile = void 0;
 const authModel_1 = __importDefault(require("../Model/authModel"));
 const profileModel_1 = __importDefault(require("../Model/profileModel"));
-const mongoose_1 = __importDefault(require("mongoose"));
 const streamUpload_1 = require("../utils/streamUpload");
+const mongoose_1 = require("mongoose");
+const mainError_1 = require("../error/mainError");
 const createProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { studentID } = req.params;
+        const { userID } = req.params;
         const { motivation, fullName, schoolName, address, phoneNumber, gender } = req.body;
-        const student = yield authModel_1.default.findById(studentID);
+        const user = yield authModel_1.default.findById(userID);
         const { secure_url, public_id } = yield (0, streamUpload_1.streamUpload)(req);
-        if (student) {
+        if (user) {
             const profiled = yield profileModel_1.default.create({
                 motivation,
                 fullName,
@@ -34,22 +35,21 @@ const createProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 avatar: secure_url,
                 avatarID: public_id,
             });
-            student.profile.push(new mongoose_1.default.
-                Types.ObjectId(profiled === null || profiled === void 0 ? void 0 : profiled._id));
-            yield student.save();
-            return res.status(201).json({
+            user.profile.push(new mongoose_1.Types.ObjectId(profiled === null || profiled === void 0 ? void 0 : profiled._id));
+            yield user.save();
+            return res.status(mainError_1.HTTP.CREATE).json({
                 message: "student profile created",
                 data: profiled,
             });
         }
         else {
-            return res.status(404).json({
+            return res.status(mainError_1.HTTP.BAD).json({
                 message: "student not found",
             });
         }
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: "Error creating profile",
             data: error.message,
         });
@@ -59,13 +59,13 @@ exports.createProfile = createProfile;
 const viewProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const profiled = yield profileModel_1.default.find();
-        return res.status(200).json({
+        return res.status(mainError_1.HTTP.OK).json({
             message: "can see all profiles",
             data: profiled,
         });
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: "error",
             data: error.message,
         });
@@ -76,13 +76,13 @@ const viewOneProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
     try {
         const { profileID } = req.params;
         const profiled = yield profileModel_1.default.findById(profileID);
-        return res.status(200).json({
+        return res.status(mainError_1.HTTP.OK).json({
             message: "can see one profile",
             data: profiled,
         });
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: "error",
             data: error.message,
         });
@@ -95,13 +95,13 @@ const veiwStudentProfile = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const student = yield authModel_1.default.findById(studentID).populate({
             path: "profile",
         });
-        return res.status(200).json({
+        return res.status(mainError_1.HTTP.OK).json({
             message: "can see a student profile",
             data: student,
         });
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: "error",
             data: error.message,
         });
@@ -113,13 +113,13 @@ const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { profileID } = req.params;
         const { schoolName, phoneNumber, address } = req.body;
         const profiled = yield profileModel_1.default.findByIdAndUpdate(profileID, { schoolName, phoneNumber, address }, { new: true });
-        return res.status(201).json({
+        return res.status(mainError_1.HTTP.UPDATE).json({
             message: "Profile updated",
             data: profiled,
         });
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: "error",
             data: error.message,
         });
@@ -130,13 +130,13 @@ const deleteOneProfile = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const { profileID } = req.params;
         const profiled = yield profileModel_1.default.findByIdAndDelete(profileID);
-        return res.status(200).json({
+        return res.status(mainError_1.HTTP.OK).json({
             message: "can see one profile",
             data: profiled,
         });
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: "error",
             data: error.message,
         });

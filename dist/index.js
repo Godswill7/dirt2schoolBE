@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const db_1 = __importDefault(require("./Config/db"));
 const mainApp_1 = __importDefault(require("./mainApp"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const db_1 = __importDefault(require("./Config/db"));
 dotenv_1.default.config();
 const realPort = parseInt(process.env.PORT);
 const port = realPort;

@@ -3,11 +3,11 @@ import {
   changePassword,
   deleteUser,
   firstStudentVerify,
+  forgotPassword,
   getAllUser,
   inputOtp,
   registerStudent,
   registerUser,
-  resetPassword,
   signInStudent,
   signInUser,
   verifyUser,
@@ -18,7 +18,7 @@ import {
   createStudentValidator,
   createUserValidator,
   inputOTP,
-  resetValidator,
+  resetPassword,
   signInStudentValidator,
   signInUserValidator,
 } from "../utils/validator";
@@ -39,9 +39,9 @@ router
   .post(validatorHandler(signInUserValidator), signInUser);
 router
   .route("/reset-password")
-  .patch(validatorHandler(resetValidator), resetPassword);
+  .patch(validatorHandler(resetPassword), forgotPassword);
 router
-  .route("/:token/change-password")
+  .route("/:userID/change-password")
   .patch(validatorHandler(changeValidator), changePassword);
 
 router
