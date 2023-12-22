@@ -7,12 +7,14 @@ import {
   viewOneProfile,
   viewProfile,
 } from "../Controller/profileController";
-import multer from "multer";
+// import multer from "multer";
+import uploads from "../utils/multer"
 
-const upload = multer().single("avatar");
+// const upload = multer().single("avatar");
+
 const profileRouter = Router();
 
-profileRouter.route("/:studentID/create-profile").post(upload, createProfile);
+profileRouter.route("/:studentID/create-profile").post(uploads, createProfile);
 profileRouter.route("/view-all-profile").get(viewProfile);
 profileRouter.route("/:profileID/view-one-profile").get(viewOneProfile);
 profileRouter.route("/:profileID/delete-one-profile").delete(deleteOneProfile);
