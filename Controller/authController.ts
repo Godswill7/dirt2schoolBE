@@ -168,7 +168,7 @@ export const verifyUser = async (req: Request, res: Response) => {
   }
 };
 
-export const resetPassword = async (req: Request, res: Response) => {
+export const forgotPassword = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
 
@@ -208,13 +208,13 @@ export const changePassword = async (req: Request, res: Response) => {
 
     const user = await authModel.findById(userID);
 
-    if (user?.verified && user.token !== "") {
+    if (user?.verified && user.token === "") {
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(password, salt);
 
       const change = await authModel.findByIdAndUpdate(
         userID,
-        { password: hash, token: "" },
+        { password: hash },
         { new: true }
       );
 
@@ -247,6 +247,7 @@ export const inputOtp = async (req: Request, res: Response) => {
         const update = await authModel.findByIdAndUpdate(
           user._id,
           {
+            password: "",
             token: "",
           },
           { new: true }

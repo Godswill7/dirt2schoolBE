@@ -8,7 +8,7 @@ const express_1 = require("express");
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const authRouter_1 = __importDefault(require("./router/authRouter"));
-const authRouter_2 = __importDefault(require("./router/authRouter"));
+const bagRouter_1 = __importDefault(require("./router/bagRouter"));
 const feeRouter_1 = __importDefault(require("./router/feeRouter"));
 const profileRouter_1 = __importDefault(require("./router/profileRouter"));
 const schoolRouter_1 = __importDefault(require("./router/schoolRouter"));
@@ -21,7 +21,7 @@ const mainApp = (app) => {
     app.use((0, morgan_1.default)("dev"));
     app.set("view engine", "ejs");
     app.use("/api", authRouter_1.default);
-    app.use("/api", authRouter_2.default);
+    app.use("/api", bagRouter_1.default);
     app.use("/api", feeRouter_1.default);
     app.use("/api", profileRouter_1.default);
     app.use("/api", schoolRouter_1.default);

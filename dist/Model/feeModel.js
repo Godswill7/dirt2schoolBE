@@ -5,7 +5,7 @@ const feeModel = new mongoose_1.Schema({
     ammountPaid: {
         type: Number,
     },
-    studentID: {
+    userID: {
         type: String,
     },
     schoolID: {

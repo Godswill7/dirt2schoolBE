@@ -9,7 +9,7 @@ import {
 import helmet from "helmet";
 import morgan from "morgan";
 import user from "./router/authRouter";
-import bag from "./router/authRouter";
+import bag from "./router/bagRouter";
 import fee from "./router/feeRouter";
 import profileRouter from "./router/profileRouter";
 import school from "./router/schoolRouter";
