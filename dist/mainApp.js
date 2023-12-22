@@ -35,7 +35,7 @@ const mainApp = (app) => {
     app.get("/", (req, res) => {
         try {
             return res.status(mainError_1.HTTP.OK).json({
-                message: "Success",
+                message: "Welcome to Dirt2School API, Enjoy 💥💫☑",
             });
         }
         catch (error) {

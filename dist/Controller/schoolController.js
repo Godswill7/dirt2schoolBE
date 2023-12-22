@@ -18,6 +18,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const email_1 = require("../utils/email");
 const crypto_1 = __importDefault(require("crypto"));
 const roles_1 = require("../utils/roles");
+const mainError_1 = require("../error/mainError");
 const createSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { schoolName, email, password, address } = req.body;
@@ -35,13 +36,13 @@ const createSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         (0, email_1.sendSchoolMail)(school).then(() => {
             console.log("School Mail Sent ...");
         });
-        return res.status(201).json({
+        return res.status(mainError_1.HTTP.CREATE).json({
             message: `${schoolName} school has been created successfully`,
             data: school,
         });
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: `An Error Occured: ${error.message}`,
         });
     }
@@ -55,30 +56,30 @@ const loginSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             if (findSchool.verified === true) {
                 const isPassword = yield bcrypt_1.default.compare(findSchool === null || findSchool === void 0 ? void 0 : findSchool.password, password);
                 if (isPassword) {
-                    return res.status(200).json({
+                    return res.status(mainError_1.HTTP.OK).json({
                         message: `Welcome back ${findSchool === null || findSchool === void 0 ? void 0 : findSchool.schoolName}`,
                     });
                 }
                 else {
-                    return res.status(404).json({
+                    return res.status(mainError_1.HTTP.BAD).json({
                         message: "Incorrect password",
                     });
                 }
             }
             else {
-                return res.status(404).json({
+                return res.status(mainError_1.HTTP.BAD).json({
                     message: "School is not verified to operate on this platform",
                 });
             }
         }
         else {
-            return res.status(404).json({
+            return res.status(mainError_1.HTTP.BAD).json({
                 message: "School does not exist on this platform",
             });
         }
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: `An Error Occured: ${error.message}`,
         });
     }
@@ -99,19 +100,19 @@ const verifySchool = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 });
             }
             else {
-                return res.status(404).json({
+                return res.status(mainError_1.HTTP.BAD).json({
                     message: "School is already verified",
                 });
             }
         }
         else {
-            return res.status(404).json({
+            return res.status(mainError_1.HTTP.BAD).json({
                 message: "School does not exist",
             });
         }
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: `An Error Occured: ${error.message}`,
         });
     }
@@ -127,7 +128,7 @@ const getSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: `An Error Occured: ${error.message}`,
         });
     }
@@ -142,7 +143,7 @@ const getAllSchools = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: `An Error Occured: ${error.message}`,
         });
     }
@@ -157,7 +158,7 @@ const deleteSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
-        return res.status(404).json({
+        return res.status(mainError_1.HTTP.BAD).json({
             message: `An Error Occured: ${error.message}`,
         });
     }
