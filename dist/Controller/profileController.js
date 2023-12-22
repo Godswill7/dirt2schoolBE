@@ -131,7 +131,7 @@ const deleteOneProfile = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { profileID } = req.params;
         const profiled = yield profileModel_1.default.findByIdAndDelete(profileID);
         return res.status(mainError_1.HTTP.OK).json({
-            message: "can see one profile",
+            message: "Profile Deleted",
             data: profiled,
         });
     }
